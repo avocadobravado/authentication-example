@@ -1,13 +1,19 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { routing } from './app.routing';
+import { AuthGuardService } from './auth-guard.service';
+import { AuthenticationService } from './authentication.service';
 
 import { AppComponent } from './app.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { masterFirebaseConfig } from './api-keys';
+import { PublicComponent } from './public/public.component';
+import { PrivateComponent } from './private/private.component';
 
 export const firebaseConfig = {
   apiKey: masterFirebaseConfig.apiKey,
@@ -15,21 +21,24 @@ export const firebaseConfig = {
   databaseURL: masterFirebaseConfig.databaseURL,
   storageBucket: masterFirebaseConfig.storageBucket,
   messagingSenderId: masterFirebaseConfig.messagingSenderId
-};
+}
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PublicComponent,
+    PrivateComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    routing,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule,
+    AngularFireAuthModule
   ],
-  providers: [],
+  providers: [AuthGuardService, AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
